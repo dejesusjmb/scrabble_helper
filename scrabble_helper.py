@@ -27,12 +27,13 @@ while not end:
         blankTileCount = int(inputBlankTileCount)
         isWordSubset = True
         wordScore = 0
-        for letter in word:
-            letterScore = LETTER_SCORES[ord(letter) - 65]
-            if word.count(letter) > inputLetters.count(letter):
-                if blankTileCount > 0:
-                    blankTileCount -= 1
-                    letterScore = 0
+        for letter in set(word):
+            letterScore = LETTER_SCORES[ord(letter) - 65] * word.count(letter)
+            letterCountDifference = word.count(letter) - inputLetters.count(letter)
+            if letterCountDifference > 0:
+                if blankTileCount >= letterCountDifference:
+                    blankTileCount -= letterCountDifference
+                    letterScore -= LETTER_SCORES[ord(letter) - 65] * letterCountDifference
                 else:
                     isWordSubset = False
                     break
